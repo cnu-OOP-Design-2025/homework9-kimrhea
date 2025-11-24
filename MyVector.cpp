@@ -6,7 +6,60 @@ using namespace std;
 template<typename T>
 class MyVector {
 /* TODO */
+private:
+    T* data;             // 동적 배열을 가리키는 포인터 (T 타입)
+    size_t capacity;     // 현재 할당된 배열 크기
+    size_t length;       
 
+    void resize() {
+        cout << "Resize: " << capacity << " -> " << capacity * 2 << endl;
+
+        size_t newCapacity =capacity*2;
+        T* newData = new T[newCapacity];
+
+        for (size_t i=0;i<length;++i) {
+            newData[i]= data[i];
+        }
+
+        delete[] data;
+        data = newData;
+        capacity = newCapacity;
+    }
+
+public:
+    MyVector() : capacity(2), length(0) {
+        data = new T[capacity];
+    }
+
+    ~MyVector() {
+        if (data !=nullptr) {
+            delete[] data;
+        }
+    }
+
+    void push_back(const T& value) {
+        if (length>= capacity) {
+            resize();
+        }
+        data[length] = value;
+        length++;
+    }
+
+    T pop_back() {
+        if (length == 0)
+            throw out_of_range("Vector is empty");
+        
+        length--;
+        return data[length];
+    }
+
+    T& operator[](const int index) {
+        return data[index];
+    }
+
+    size_t size() const {
+        return length;
+    }
 
 
 
